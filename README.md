@@ -1,4 +1,4 @@
-# highluck.SpringBoot
+# highluck.AccountBoot
 Spring boot & Jpa 를 이용한 기본 rest api 계정서버
 
 1. 회원가입, 로그인, 로그아웃 등 계정 
