@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">30cut 이메일 인증</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+	<a href="http:localhost:8080/cut/email/auth">이메일 인증
+	<form method="post" enctype='application/json'>
+ 	 <input name='email' value="${email}">
+	 <input name='tokenKey' value='${token}'>
+	</form>
+	
+	</a>
+  </body>
+</html>

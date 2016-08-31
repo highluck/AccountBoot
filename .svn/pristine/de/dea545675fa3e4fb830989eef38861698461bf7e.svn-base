@@ -1,0 +1,30 @@
+package com.nh.cut.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.nh.cut.library.AuthCode;
+import com.nh.cut.library.CutEncryption;
+import com.nh.cut.library.EmailSender;
+
+@Component("library")
+public class LibraryContainer {
+	@Autowired
+	private EmailSender emailSender;
+	@Autowired
+	private CutEncryption cutEncryption;
+	@Autowired
+	private AuthCode authCode;
+	
+	public CutEncryption getCutEncryption() {
+		return cutEncryption;
+	}
+	public AuthCode getAuthCode() {
+		return authCode;
+	}
+	public EmailSender getEmailSender() {
+		return emailSender;
+	}
+
+	
+}

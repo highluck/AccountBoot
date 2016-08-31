@@ -1,0 +1,33 @@
+
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 25
+    username: "peoplejobis@gmail.com"
+    password: "bxhnoydmxdzculsp"
+    properties:
+          mail:
+             smtp:
+               auth : true
+               starttls: 
+                  enable   : true
+                  required : true
+  profiles: default
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: false
+    show-sql: true
+datasource:
+   serviceDb:
+      driverClassName: "com.mysql.jdbc.Driver"
+      url: "jdbc:mysql://172.30.1.198:3306/30cut?useUnicode=true&charaterEncoding=utf-8"
+      username: "30cut"
+      password: "30cut1@#"
+      initialSize: 10
+      maxActive: 10
+      maxIdle: 10
+      minIdle: 10
+      maxWait: 3000
+ 

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">30cut 이메일 인증</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+	<body>
+
+		<form method="post" enctype='application/json' accept-charset="UTF-8" action ="http://localhost:8080/cut/auth/email">
+ 		 	<input type="hidden" name='email' th:value="${mail}"/>
+	 		<input type="hidden" name='tokenKey' th:value='${token}'/>
+			<input type="image" src="cid:button.jpg" alt="Submit" />
+		</form>
+	</body>
+
+</html>

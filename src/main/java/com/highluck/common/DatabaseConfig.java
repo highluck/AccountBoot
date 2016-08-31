@@ -1,0 +1,82 @@
+package com.highluck.common;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.tomcat.jdbc.pool.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@Configuration
+@EnableTransactionManagement
+@EnableConfigurationProperties(ServiceDB.class)
+public class DatabaseConfig {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConfig.class);
+
+	private static final String DEFAULT_NAMING_STRATEGY = "org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy";
+	
+	@Autowired
+	private ServiceDB serviceDB;
+		
+	@Bean
+	@Primary
+	public DataSource serviceDataSource(){
+		DataSource dataSource = new DataSource();
+	
+		dataSource.setDriverClassName(serviceDB.getDriverClassName());
+		dataSource.setUrl(serviceDB.getUrl());
+		dataSource.setUsername(serviceDB.getUsername());
+		dataSource.setPassword(serviceDB.getPassword());
+		dataSource.setInitialSize(serviceDB.getInitialSize());
+		dataSource.setMaxActive(serviceDB.getMaxActive());
+		dataSource.setMaxIdle(serviceDB.getMaxIdle());
+		dataSource.setMinIdle(serviceDB.getMinIdle());
+		dataSource.setMaxWait(serviceDB.getMaxWait());
+		dataSource.setTestOnBorrow(false);
+		dataSource.setTestOnReturn(false);
+	
+		return dataSource;
+	}
+	
+	@Primary
+	@Bean(name = "entityManagerFactory")
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+	    EntityManagerFactoryBuilder builder) {
+
+	    Map<String, String> propertiesHashMap = new HashMap<>();
+	    propertiesHashMap.put("hibernate.ejb.naming_strategy",DEFAULT_NAMING_STRATEGY);
+
+	    return builder.dataSource(serviceDataSource())
+	      .packages("com.highluck.domain")
+	      .properties(propertiesHashMap)
+	      .build();
+	}
+	  
+	@Primary
+	@Bean(name = "transactionManager")
+	public PlatformTransactionManager transactionManager(EntityManagerFactoryBuilder builder) {
+	  return new JpaTransactionManager(entityManagerFactory(builder).getObject());
+	}
+	 
+	@Configuration
+	@EnableJpaRepositories(
+	     basePackages="com.highluck.repository",
+	     entityManagerFactoryRef = "entityManagerFactory",
+	     transactionManagerRef = "transactionManager")
+	 static class DbArticleJpaRepositoriesConfig {
+	 }
+
+}

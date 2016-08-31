@@ -1,0 +1,43 @@
+package com.nh.cut.web;
+
+import java.util.concurrent.Callable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nh.cut.domain.Account;
+import com.nh.cut.response.LoginResponse;
+import com.nh.cut.service.AccountLogService;
+
+
+@RestController
+@RequestMapping("/accounts")
+public class AccountLogController {
+	private Logger log = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	AccountLogService accountLogService; 
+	
+	@RequestMapping(value ="/login", method = RequestMethod.POST)
+	public @ResponseBody Callable<LoginResponse> login(@RequestBody Account account){
+		
+		return () -> {
+			return accountLogService.login(account);
+		};
+	}
+	
+	@RequestMapping(value ="/logout", method = RequestMethod.POST)
+	public @ResponseBody Callable<LoginResponse> logout(@RequestBody Account account){
+		
+		return () -> {
+			return accountLogService.logout(account);
+		};
+	}	
+}

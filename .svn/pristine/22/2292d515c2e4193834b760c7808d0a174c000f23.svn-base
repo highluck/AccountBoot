@@ -1,0 +1,33 @@
+package com.nh.cut;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.nh.cut.library.MailMessage;
+import com.nh.cut.library.EmailSender;
+
+@RunWith(SpringRunner.class)
+@SpringApplicationConfiguration(classes = {CutAccountServerApplicationTests.class, CutAccountServerApplication.class})
+public class LibraryTest {
+
+	@Test
+	public void mailTest() {
+		
+		
+		MailMessage mail = new MailMessage();
+		mail.setMessage(
+				"<img src=" + "naver.com" + "width="+"100" + "height=" + "200>");
+		
+		mail.setReciver("yello1109@daum.net");
+		mail.setSubject("asd");
+		
+		//mailSender.sendAuthMail(mail);
+		
+	}
+
+}

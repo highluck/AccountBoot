@@ -1,0 +1,16 @@
+package com.nh.cut;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
+
+import com.nh.cut.common.ThymeleafConfig;
+
+
+@SpringBootApplication(exclude = ThymeleafConfig.class)
+public class CutAccountServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CutAccountServerApplication.class, args);
+	}
+}

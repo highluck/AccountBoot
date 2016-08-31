@@ -1,0 +1,90 @@
+package com.highluck.service;
+
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.highluck.common.DatabaseConfig;
+import com.highluck.common.LibraryContainer;
+import com.highluck.domain.Account;
+import com.highluck.domain.AccountLog;
+import com.highluck.repository.AccountLogRepository;
+import com.highluck.repository.AccountRepository;
+import com.highluck.response.LoginResponse;
+
+@Service
+public class AccountLogService{
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
+	@Autowired
+	private AccountRepository accountRepository;
+	@Autowired
+	private AccountLogRepository accountLogRepository;
+	@Autowired
+	private LibraryContainer library;
+	
+	
+	public LoginResponse login(Account request, String ip){
+		LoginResponse response = new LoginResponse();
+		AccountLog log = new AccountLog();
+		Account account = accountRepository.findByEmail(request.getEmail());
+		try {
+			if(account.getPassword().equals(library.getCutEncryption().getEncSHA256(request.getPassword()))){
+									
+				response.setResult(account.getEmailAuth() == 1 ? response.SUCCESS: response.HALF);
+				response.setTokenKey(library.getCutEncryption().getEncSHA256(request.getEmail() + library.getAuthCode()));
+				log.setEmail(request.getEmail());
+				log.setLoginDate(Timestamp.valueOf(LocalDateTime.now()));
+				log.setLogoutDate(null);
+				log.setIp(ip);
+				account.setTokenKey(response.getTokenKey());
+				accountLogRepository.save(log);				
+			}
+			else{
+				response.setResult(response.FAIL);
+				response.setReason("아이디 또는 비밀번호가 틀립니다.");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			response.setResult(response.FAIL);
+			response.setReason("exception  :" + e.toString());
+		}
+		return response;
+	}
+	
+	@Transactional
+	public LoginResponse logout(Account request){
+		
+		Account account = accountRepository.findByEmail(request.getEmail());
+		LoginResponse response = new LoginResponse();
+
+		if(account.getTokenKey().equals(request.getTokenKey())){
+			account.setTokenKey("GG");
+			accountLogRepository.findByEmailOrderByNoDesc(request.getEmail()
+					, new PageRequest(0, 1))
+									.get(0)
+									.setLogoutDate(Timestamp.valueOf(LocalDateTime.now()));			
+			
+			response.setResult(response.SUCCESS);
+			response.setReason("로그아웃");
+			response.setTokenKey(account.getTokenKey());
+		}
+		else{
+			response.setResult(response.FAIL);
+			response.setReason("잘못된 정보");
+			
+		}
+		return response;
+	}
+		
+}

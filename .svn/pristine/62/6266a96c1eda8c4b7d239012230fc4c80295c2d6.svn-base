@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">30cut 이메일 인증</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+  </head>
+	<body>
+	<div align="center">
+		<form method="post" enctype='application/json' accept-charset="UTF-8" action ="http://localhost:8080/cut/auth//password/change">
+ 		 	<input type="hidden" name='email' th:value="${mail}"/>
+	 		<input type="hidden" name='tokenKey' th:value='${token}'/>
+		<table>
+	 		<tr>
+	 			<td width="200" height="30" style="font size = 12 ">패스워드를 변경 해주세요. (8자 ~ 16자 사이 영숫자 혼합)s</td>
+	 		</tr>
+	 		<tr>	
+	 			<td width="200" height="30" style="font size = 12 ">
+	 			<input width="200" size = "35" maxlength="16" type = "password" name='password' value=''/>
+	 			</td>
+	 		</tr>
+	 		<tr>	
+	 			<td width="200" height="30"><input type="image" src="cid:button.jpg" alt="Submit" /></td>
+	 		</tr>
+	 	</table>
+		</form>
+	</div>
+	</body>
+</html>
