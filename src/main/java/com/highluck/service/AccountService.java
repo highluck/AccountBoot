@@ -22,7 +22,7 @@ import com.highluck.response.CommonResponse;
 public class AccountService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	public final static String MAIL_AUTH = "30cut 인증메일 입니다.";
+	public final static String MAIL_AUTH = "인증메일 입니다.";
 	
 	@Autowired
 	private LibraryContainer library;
