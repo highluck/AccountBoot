@@ -26,7 +26,7 @@ import com.highluck.response.LoginResponse;
 public class AuthService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final static String MAIL_PASSWORD = "30cut 패스워드 변경 메일 입니다.";
+	private final static String MAIL_PASSWORD = "패스워드 변경 메일 입니다.";
 	private static final String PASSWORD_PATTERN = "^(?=.*[a-zA-Z]+)(?=.*[!@#$%^*+=-]|.*[0-9]+).{8,16}$";
 	
 	@Autowired
